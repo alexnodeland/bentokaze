@@ -1,0 +1,11 @@
+id,category,name,unit_price,total_fat,total_carb,total_salt,total_protein
+1,'Meat','Chicken_Breast',5.99,3.6,0,0.1,31
+2,'Meat','Beef_Liver',4.49,4.1,0,0.2,25
+3,'Fruit','Apple',1.20,0.3,25,0,0.5
+4,'Seed','Flaxseed',3.00,3.0,8,0.03,2
+5,'Seed','Chia_Seeds',4.50,4.5,12,0.01,2
+6,'Dairy','Cottage_Cheese',2.99,4.3,3.4,0.5,11
+7,'Meat','Salmon',7.99,13,0,0.1,20
+8,'Fruit','Blueberries',3.99,0.3,21,0,1
+9,'Meat','Turkey_Thigh',6.49,8.5,0,0.2,28
+10,'Dairy','Yogurt',1.99,3.5,4.7,0.1,5

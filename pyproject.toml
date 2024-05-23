@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "bentokaze"
+version = "0.1.0"
+description = ""
+authors = ["Alex Nodeland <nodeland.alex@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+PuLP = "^2.8.0"
+streamlit = "^1.35.0"
+pandas = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
