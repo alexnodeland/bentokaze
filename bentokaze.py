@@ -96,6 +96,9 @@ prob += (
     "TotalCost",
 )
 
+# Export the problem data to a .lp file
+prob.writeLP("BentoKaze.lp")
+
 # Solve the problem
 prob.solve()
 
