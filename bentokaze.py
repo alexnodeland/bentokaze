@@ -111,8 +111,14 @@ if __name__ == "__main__":
         "total_carb": 100,
         "total_salt": 5,
     }
+    max_volume = 100
+    min_mass_per_category = 0.5
     optimizer = BentoKazeOptimizer(
-        "sample_data.csv", "data/food_density.csv", target_nutrition, 100, 0.5
+        "sample_data.csv",
+        "data/food_density.csv",
+        target_nutrition,
+        max_volume,
+        min_mass_per_category,
     )
     optimizer.add_nutritional_constraints()
     optimizer.add_volume_constraint()
