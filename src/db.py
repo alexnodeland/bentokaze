@@ -40,7 +40,7 @@ class DBHelper:
                 CREATE TABLE IF NOT EXISTS categories (
                     category TEXT PRIMARY KEY,
                     density REAL,
-                    min_amount REAL
+                    min_portion REAL
                 )
             """,
             "items": """
