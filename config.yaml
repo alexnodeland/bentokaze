@@ -10,3 +10,8 @@ nutrition:
 optimizer:
   max_volume: 100
   min_mass_per_category: 0.5
+  constraints:
+    fat: ">="
+    protein: ">="
+    carb: "<="
+    salt: "<="
