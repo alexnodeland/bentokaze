@@ -10,5 +10,5 @@ __pycache__/
 *.sqlite3
 *.db
 
-# PuLP files
-*.lp
+# PuLP outputs
+models/*
