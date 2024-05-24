@@ -1,8 +1,15 @@
 # Food Data Schema
 
-This repository contains data about various food items, including their density, nutritional content, and price. The data is organized into three CSV files: `density.csv`, `nutrition.csv`, and `price.csv`.
+This repository contains data about various food items, including their density, nutritional content, and price. The data is organized into four CSV files: `food_items.csv`, `density.csv`, `nutrition.csv`, and `price.csv`.
 
 ## Schema Description
+
+### `food_items.csv`
+
+This file contains the basic information about food items and their categories.
+
+- **name**: The specific name of the food item (e.g., 'Chicken_Breast', 'Apple').
+- **category**: The type of food (e.g., 'Meat', 'Fruit').
 
 ### `density.csv`
 
@@ -15,7 +22,6 @@ This file contains the density information for different food categories.
 
 This file provides nutritional information for various food items, standardized per 100 grams.
 
-- **category**: The type of food (e.g., 'Meat', 'Fruit').
 - **name**: The specific name of the food item (e.g., 'Chicken_Breast', 'Apple').
 - **fat**: The fat content in grams per 100 grams.
 - **carb**: The carbohydrate content in grams per 100 grams.
@@ -35,12 +41,15 @@ Below is the ERD representing the relationships between the entities in the sche
 
 ```mermaid
 erDiagram
+    FOOD_ITEMS {
+        string name
+        string category
+    }
     DENSITY {
         string category
         float density
     }
     NUTRITION {
-        string category
         string name
         float fat
         float carb
@@ -51,14 +60,16 @@ erDiagram
         string name
         float unit_price
     }
-    DENSITY ||--o{ NUTRITION : contains
-    NUTRITION ||--o{ PRICE : has
+    FOOD_ITEMS ||--o{ NUTRITION : contains
+    FOOD_ITEMS ||--o{ PRICE : has
+    FOOD_ITEMS }o--|| DENSITY : belongs_to
 ```
 
 In this diagram:
 
+- The `FOOD_ITEMS` entity contains the basic information about food items and their categories.
 - The `DENSITY` entity contains the density information for each food category.
-- The `NUTRITION` entity contains the nutritional information for each food item, linked to the `DENSITY` entity by the `category` field.
-- The `PRICE` entity contains the price information for each food item, linked to the `NUTRITION` entity by the `name` field.
+- The `NUTRITION` entity contains the nutritional information for each food item, linked to the `FOOD_ITEMS` entity by the `name` field.
+- The `PRICE` entity contains the price information for each food item, linked to the `FOOD_ITEMS` entity by the `name` field.
 
 This schema allows for a comprehensive view of the food items, including their density, nutritional content, and price, all standardized per 100 grams.
