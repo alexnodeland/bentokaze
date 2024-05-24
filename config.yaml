@@ -1,0 +1,12 @@
+database:
+  file: "data.db"
+
+nutrition:
+  fat: 20
+  protein: 50
+  carb: 100
+  salt: 5
+
+optimizer:
+  max_volume: 100
+  min_mass_per_category: 0.5
