@@ -1,4 +1,5 @@
 import logging
+import logging.config
 import os
 import sqlite3
 from contextlib import closing
@@ -8,10 +9,11 @@ import yaml
 from src.bentokaze import BentoKazeOptimizer
 from src.db import setup_database
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+# Configure logging using logging.conf
+logging.config.fileConfig("logging.conf")
+
+# Create a logger for this script
+logger = logging.getLogger("script")
 
 
 def load_config(config_path="config.yaml"):
@@ -53,9 +55,9 @@ def run_optimizer(config, db_file):
             optimizer.set_objective()
             status, results = optimizer.solve()
 
-            logging.info(f"Status: {status}")
+            logger.info(f"Status: {status}")
             for name, value in results.items():
-                logging.info(f"{name} = {value}")
+                logger.info(f"{name} = {value}")
 
             optimizer.export_problem(
                 filename=export_filename,
@@ -63,7 +65,7 @@ def run_optimizer(config, db_file):
                 output_dir=export_output_dir,
             )
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
 
 
 def main():
