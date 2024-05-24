@@ -31,9 +31,16 @@ def setup_db_and_load_data(config):
     return db_file
 
 
-def generate_markdown_report(status, results, config):
+def generate_markdown_report(status, results, nutrition_values, total_volume, config):
     output_dir = config["export"]["output_dir"]
     report_filename = config["export"]["report_filename"]
+    portion_size = config["food_list"].get(
+        "portion_size", 100
+    )  # Default to 100 if not specified
+    portion_unit = config["food_list"].get(
+        "portion_unit", "g"
+    )  # Default to "g" if not specified
+
     full_path = os.path.join(output_dir, report_filename)
 
     report_lines = [
@@ -45,10 +52,21 @@ def generate_markdown_report(status, results, config):
         "",
     ]
 
+    report_lines.append(f"| Item | Amount ({portion_unit}) |")
+    report_lines.append("|------|----------------|")
     for name, value in results.items():
         stripped_name = name.strip("'\"")
-        stripped_value = str(value).strip("'\"")
-        report_lines.append(f"- **{stripped_name}**: {stripped_value}")
+        stripped_value = str(value * portion_size).strip("'\"")
+        report_lines.append(f"| {stripped_name} | {stripped_value} |")
+
+    report_lines.append("")
+    report_lines.append("## Nutritional Values")
+    report_lines.append("")
+
+    report_lines.append(f"| Nutrient | Amount ({portion_unit}) |")
+    report_lines.append("|----------|-----------|")
+    for nutrient, value in nutrition_values.items():
+        report_lines.append(f"| {nutrient.capitalize()} | {value:.2f} |")
 
     report_lines.append("")
 
@@ -85,6 +103,14 @@ def run_optimizer(config, db_file):
             optimizer.set_objective()
             status, results = optimizer.solve()
 
+            if status == "Optimal":
+                nutrition_values = optimizer.calculate_nutrition_values(results)
+                total_volume = optimizer.calculate_total_volume(results)
+                logger.info(
+                    f"Nutritional values of the final output: {nutrition_values}"
+                )
+                logger.info(f"Total volume of the final output: {total_volume}")
+
             logger.info(f"Status: {status}")
             for name, value in results.items():
                 logger.info(f"{name} = {value}")
@@ -95,20 +121,27 @@ def run_optimizer(config, db_file):
                 output_dir=export_output_dir,
             )
 
-            return status, results
+            return status, results, nutrition_values, total_volume
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")
-            return None, None
+            return None, None, None, None
 
 
 def main():
     config = load_config()
     db_file = setup_db_and_load_data(config)
-    status, results = run_optimizer(config, db_file)
+    status, results, nutrition_values, total_volume = run_optimizer(config, db_file)
 
     if status and results:
-        generate_markdown_report(status, results, config)
+        generate_markdown_report(
+            status, results, nutrition_values, total_volume, config
+        )
+        logger.info(
+            f"Nutritional values and total volume calculated and report generated"
+        )
+    else:
+        logger.error("Optimization failed or no results to report")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,10 @@ data_files:
   items: "items.csv"
   prices: "prices.csv"
 
+food_list:
+  portion_size: 100
+  portion_unit: "g"
+  
 nutrition:
   fat: 20
   protein: 50
@@ -15,8 +19,8 @@ nutrition:
   salt: 5
 
 optimizer:
-  max_volume: 100
-  min_mass_per_category: 0.5
+  max_volume: 1000
+  min_mass_per_category: 1
   constraints:
     fat: ">="
     protein: ">="

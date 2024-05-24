@@ -159,6 +159,27 @@ class BentoKazeOptimizer:
         logger.info(f"Optimization problem solved with status: {status}")
         return status, solution
 
+    def calculate_nutrition_values(
+        self, solution: Dict[str, float]
+    ) -> Dict[str, float]:
+        """Calculate the nutritional values of the selected ingredients."""
+        nutrition_values = {nutrient: 0.0 for nutrient in self.target_nutrition.keys()}
+
+        for ingredient, amount in solution.items():
+            row = self.all_data[self.all_data["name"] == ingredient].iloc[0]
+            for nutrient in nutrition_values.keys():
+                nutrition_values[nutrient] += row[nutrient] * amount
+
+        return nutrition_values
+
+    def calculate_total_volume(self, solution: Dict[str, float]) -> float:
+        """Calculate the total volume of the selected ingredients."""
+        total_volume = 0.0
+        for ingredient, amount in solution.items():
+            row = self.all_data[self.all_data["name"] == ingredient].iloc[0]
+            total_volume += amount * (1 / self.density_dict[row["category"]])
+        return total_volume
+
     def export_problem(
         self, filename="model", export_formats=["lp"], output_dir="models"
     ):
