@@ -72,4 +72,12 @@ In this diagram:
 - The `NUTRITION` entity contains the nutritional information for each food item, linked to the `FOOD_ITEMS` entity by the `name` field.
 - The `PRICE` entity contains the price information for each food item, linked to the `FOOD_ITEMS` entity by the `name` field.
 
+## Foreign Key Relationships
+
+To enforce referential integrity, we can define foreign key relationships in the schema:
+
+- `NUTRITION.name` references `FOOD_ITEMS.name`
+- `PRICE.name` references `FOOD_ITEMS.name`
+- `FOOD_ITEMS.category` references `DENSITY.category`
+
 This schema allows for a comprehensive view of the food items, including their density, nutritional content, and price, all standardized per 100 grams.
