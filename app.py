@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from bentokaze import BentoKazeOptimizer
+from src.bentokaze import BentoKazeOptimizer
 
 # Streamlit app
 st.title("BentoKaze Optimizer")

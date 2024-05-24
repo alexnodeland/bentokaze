@@ -1,5 +1,5 @@
 database:
-  file: "data.db"
+  file: "data/bentoData.db"
 
 nutrition:
   fat: 20

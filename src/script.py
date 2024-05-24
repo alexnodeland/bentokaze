@@ -6,7 +6,7 @@ from bentokaze import BentoKazeOptimizer
 from db import setup_database
 
 # Load configuration from YAML file
-with open("config.yaml", "r") as file:
+with open("src/config.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Extract configuration values
