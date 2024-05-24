@@ -1,11 +1,13 @@
 database:
   file: "data/bentoData.db"
 
+data_path: "data/"
+
 data_files:
-  density: "data/density.csv"
-  items: "data/items.csv"
-  nutrition: "data/nutrition.csv"
-  price: "data/price.csv"
+  density: "density.csv"
+  items: "items.csv"
+  nutrition: "nutrition.csv"
+  price: "price.csv"
 
 nutrition:
   fat: 20

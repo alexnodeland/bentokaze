@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 import yaml
@@ -11,10 +12,11 @@ with open("config.yaml", "r") as file:
 
 # Extract configuration values
 db_file = config["database"]["file"]
-density_file = config["data_files"]["density"]
-items_file = config["data_files"]["items"]
-nutrition_file = config["data_files"]["nutrition"]
-price_file = config["data_files"]["price"]
+data_path = config["data_path"]
+density_file = os.path.join(data_path, config["data_files"]["density"])
+items_file = os.path.join(data_path, config["data_files"]["items"])
+nutrition_file = os.path.join(data_path, config["data_files"]["nutrition"])
+price_file = os.path.join(data_path, config["data_files"]["price"])
 target_nutrition = config["nutrition"]
 max_volume = config["optimizer"]["max_volume"]
 min_mass_per_category = config["optimizer"]["min_mass_per_category"]
