@@ -12,3 +12,6 @@ __pycache__/
 
 # PuLP outputs
 models/*
+
+# Logs
+logs/*
