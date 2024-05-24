@@ -13,17 +13,19 @@ with open("config.yaml", "r") as file:
 # Extract configuration values
 db_file = config["database"]["file"]
 data_path = config["data_path"]
-density_file = os.path.join(data_path, config["data_files"]["density"])
+categories_file = os.path.join(data_path, config["data_files"]["categories"])
 items_file = os.path.join(data_path, config["data_files"]["items"])
-nutrition_file = os.path.join(data_path, config["data_files"]["nutrition"])
-price_file = os.path.join(data_path, config["data_files"]["price"])
+prices_file = os.path.join(data_path, config["data_files"]["prices"])
 target_nutrition = config["nutrition"]
 max_volume = config["optimizer"]["max_volume"]
 min_mass_per_category = config["optimizer"]["min_mass_per_category"]
 constraints = config["optimizer"]["constraints"]
+export_filename = config["export"]["filename"]
+export_formats = config["export"]["formats"]
+export_output_dir = config["export"]["output_dir"]
 
 # Ensure the database is set up and data is loaded
-setup_database(db_file, density_file, items_file, nutrition_file, price_file)
+setup_database(db_file, categories_file, items_file, prices_file)
 
 # Create a database session
 db_session = sqlite3.connect(db_file)
@@ -46,6 +48,12 @@ try:
     print(f"Status: {status}")
     for name, value in results.items():
         print(f"{name} = {value}")
+
+    optimizer.export_problem(
+        filename=export_filename,
+        export_formats=export_formats,
+        output_dir=export_output_dir,
+    )
 
 except Exception as e:
     print(f"An error occurred: {e}")

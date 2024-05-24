@@ -53,18 +53,17 @@ class BentoKazeOptimizer:
         """Load data from the database and merge into a single DataFrame."""
         try:
             self.item_data = pd.read_sql_query("SELECT * FROM items", self.conn)
-            self.density_data = pd.read_sql_query("SELECT * FROM density", self.conn)
-            self.nutrition_data = pd.read_sql_query(
-                "SELECT * FROM nutrition", self.conn
+            self.category_data = pd.read_sql_query(
+                "SELECT * FROM categories", self.conn
             )
-            self.price_data = pd.read_sql_query("SELECT * FROM price", self.conn)
+            self.price_data = pd.read_sql_query("SELECT * FROM prices", self.conn)
             self.all_data = pd.merge(
                 self.item_data,
-                pd.merge(self.nutrition_data, self.price_data, on="name"),
+                self.price_data,
                 on="name",
             )
             self.density_dict = dict(
-                zip(self.density_data["category"], self.density_data["density"])
+                zip(self.category_data["category"], self.category_data["density"])
             )
             logger.info("Data loaded and merged successfully")
         except Exception as e:
@@ -159,3 +158,26 @@ class BentoKazeOptimizer:
         solution = {v.name: v.varValue for v in self.prob.variables() if v.varValue > 0}
         logger.info(f"Optimization problem solved with status: {status}")
         return status, solution
+
+    def export_problem(
+        self, filename="model", export_formats=["lp"], output_dir="models"
+    ):
+        logger.info(
+            f"Exporting problem to formats: {export_formats} in directory: {output_dir}"
+        )
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            logger.info(f"Created output directory at {output_dir}")
+
+        for fmt in export_formats:
+            file_path = os.path.join(output_dir, f"{filename}.{fmt}")
+            logger.info(f"Exporting problem to {file_path} in {fmt} format")
+            if fmt == "mps":
+                self.prob.writeMPS(file_path)
+            elif fmt == "lp":
+                self.prob.writeLP(file_path)
+            else:
+                logger.error(f"Unsupported export format: {fmt}")
+                continue
+            logger.info(f"Successfully exported problem to {file_path}")

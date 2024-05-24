@@ -36,31 +36,26 @@ class DBHelper:
 
     def _create_tables(self):
         tables = {
-            "density": """
-                CREATE TABLE IF NOT EXISTS density (
+            "categories": """
+                CREATE TABLE IF NOT EXISTS categories (
                     category TEXT PRIMARY KEY,
-                    density REAL
+                    density REAL,
+                    min_amount REAL
                 )
             """,
             "items": """
                 CREATE TABLE IF NOT EXISTS items (
                     name TEXT PRIMARY KEY,
                     category TEXT,
-                    FOREIGN KEY (category) REFERENCES density(category)
-                )
-            """,
-            "nutrition": """
-                CREATE TABLE IF NOT EXISTS nutrition (
-                    name TEXT PRIMARY KEY,
                     fat REAL,
                     carb REAL,
                     salt REAL,
                     protein REAL,
-                    FOREIGN KEY (name) REFERENCES items(name)
+                    FOREIGN KEY (category) REFERENCES categories(category)
                 )
             """,
-            "price": """
-                CREATE TABLE IF NOT EXISTS price (
+            "prices": """
+                CREATE TABLE IF NOT EXISTS prices (
                     name TEXT PRIMARY KEY,
                     unit_price REAL,
                     FOREIGN KEY (name) REFERENCES items(name)
@@ -76,12 +71,11 @@ class DBHelper:
                 logger.error(f"Error creating table '{table}': {e}")
                 raise
 
-    def load_data(self, density_file, items_file, nutrition_file, price_file):
+    def load_data(self, categories_file, items_file, prices_file):
         files = {
-            "density": density_file,
+            "categories": categories_file,
             "items": items_file,
-            "nutrition": nutrition_file,
-            "price": price_file,
+            "prices": prices_file,
         }
 
         try:
@@ -122,16 +116,15 @@ class DBHelper:
 
 def setup_database(
     db_name: str,
-    density_file: str,
+    categories_file: str,
     items_file: str,
-    nutrition_file: str,
-    price_file: str,
+    prices_file: str,
 ):
     try:
         logger.info(f"Setting up database: {db_name}")
         db = DBHelper(db_name)
         db._create_tables()
-        db.load_data(density_file, items_file, nutrition_file, price_file)
+        db.load_data(categories_file, items_file, prices_file)
         logger.info("Database setup completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred during database setup: {e}")

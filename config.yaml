@@ -4,10 +4,9 @@ database:
 data_path: "data/"
 
 data_files:
-  density: "density.csv"
+  categories: "categories.csv"
   items: "items.csv"
-  nutrition: "nutrition.csv"
-  price: "price.csv"
+  prices: "prices.csv"
 
 nutrition:
   fat: 20
@@ -23,3 +22,8 @@ optimizer:
     protein: ">="
     carb: "<="
     salt: "<="
+
+export:
+  filename: "bentoKaze"
+  formats: ["lp", "mps"]
+  output_dir: "models"
