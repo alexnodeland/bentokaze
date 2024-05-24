@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Apple files
+.DS_Store
+
+# Database files
+*.sqlite3
+*.db
