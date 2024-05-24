@@ -1,4 +1,4 @@
-category,name,total_fat,total_carb,total_salt,total_protein
+category,name,fat,carb,salt,protein
 'Meat','Chicken_Breast',3.6,0,0.1,31
 'Meat','Beef_Liver',4.1,0,0.2,25
 'Fruit','Apple',0.3,25,0,0.5
