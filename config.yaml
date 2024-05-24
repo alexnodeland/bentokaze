@@ -27,3 +27,4 @@ export:
   filename: "bentoKaze"
   formats: ["lp", "mps"]
   output_dir: "models"
+  report_filename: "REPORT.md"

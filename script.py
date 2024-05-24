@@ -31,6 +31,36 @@ def setup_db_and_load_data(config):
     return db_file
 
 
+def generate_markdown_report(status, results, config):
+    output_dir = config["export"]["output_dir"]
+    report_filename = config["export"]["report_filename"]
+    full_path = os.path.join(output_dir, report_filename)
+
+    report_lines = [
+        "# Optimization Report",
+        "",
+        f"**Status:** {status}",
+        "",
+        "## Results",
+        "",
+    ]
+
+    for name, value in results.items():
+        stripped_name = name.strip("'\"")
+        stripped_value = str(value).strip("'\"")
+        report_lines.append(f"- **{stripped_name}**: {stripped_value}")
+
+    report_lines.append("")
+
+    report_content = "\n".join(report_lines)
+
+    os.makedirs(output_dir, exist_ok=True)  # Ensure the output directory exists
+    with open(full_path, "w") as file:
+        file.write(report_content)
+
+    logger.info(f"Markdown report generated: {full_path}")
+
+
 def run_optimizer(config, db_file):
     target_nutrition = config["nutrition"]
     max_volume = config["optimizer"]["max_volume"]
@@ -64,14 +94,21 @@ def run_optimizer(config, db_file):
                 export_formats=export_formats,
                 output_dir=export_output_dir,
             )
+
+            return status, results
+
         except Exception as e:
             logger.error(f"An error occurred: {e}")
+            return None, None
 
 
 def main():
     config = load_config()
     db_file = setup_db_and_load_data(config)
-    run_optimizer(config, db_file)
+    status, results = run_optimizer(config, db_file)
+
+    if status and results:
+        generate_markdown_report(status, results, config)
 
 
 if __name__ == "__main__":
