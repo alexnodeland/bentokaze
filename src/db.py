@@ -120,14 +120,18 @@ class DBHelper:
             logger.info("Database connection closed.")
 
 
-def setup_database(db_name: str = "data.db"):
+def setup_database(
+    db_name: str,
+    density_file: str,
+    items_file: str,
+    nutrition_file: str,
+    price_file: str,
+):
     try:
         logger.info(f"Setting up database: {db_name}")
         db = DBHelper(db_name)
         db._create_tables()
-        db.load_data(
-            "data/density.csv", "data/items.csv", "data/nutrition.csv", "data/price.csv"
-        )
+        db.load_data(density_file, items_file, nutrition_file, price_file)
         logger.info("Database setup completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred during database setup: {e}")

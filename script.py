@@ -11,13 +11,17 @@ with open("config.yaml", "r") as file:
 
 # Extract configuration values
 db_file = config["database"]["file"]
+density_file = config["data_files"]["density"]
+items_file = config["data_files"]["items"]
+nutrition_file = config["data_files"]["nutrition"]
+price_file = config["data_files"]["price"]
 target_nutrition = config["nutrition"]
 max_volume = config["optimizer"]["max_volume"]
 min_mass_per_category = config["optimizer"]["min_mass_per_category"]
 constraints = config["optimizer"]["constraints"]
 
 # Ensure the database is set up and data is loaded
-setup_database(db_file)
+setup_database(db_file, density_file, items_file, nutrition_file, price_file)
 
 # Create a database session
 db_session = sqlite3.connect(db_file)
